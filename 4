@@ -1,0 +1,9 @@
+CREATE OR REPLACE FUNCTION excliente()
+RETURNS trigger AS
+$BODY$ BEGIN
+INSERT INTO ex_cliente Values (old.sexo,old.nome);
+
+	RETURN NULL;
+
+END;
+$BODY$ LANGUAGE 'plpgsql'
