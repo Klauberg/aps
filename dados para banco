@@ -1,0 +1,48 @@
+INSERT INTO contato (nr_telefone, nr_emergencia , email) VALUES ('0','0','0');
+INSERT INTO contato (nr_telefone, nr_emergencia , email) VALUES ('48999999888','48888855777','nobody@gmail.com');
+INSERT INTO contato (nr_telefone, nr_emergencia , email) VALUES ('48885422357','48452124895','someone@gmail.com');
+INSERT INTO contato (nr_telefone, nr_emergencia , email) VALUES ('48456488542','48452124522','idc@gmail.com');
+
+INSERT INTO endereco(numero,cep,cidade,pais) VALUES ('0','0','0','0');
+INSERT INTO endereco(numero,cep,cidade,estado,pais) VALUES ('102','88005000','Florianópolis','Santa Catarina','Brasil');
+INSERT INTO endereco(numero,cep,cidade,estado,pais) VALUES ('208','88000000','Curitiba','Santa Catarina','Brasil');
+INSERT INTO endereco(numero,cep,cidade,pais) VALUES ('000','88000200','anywhere','idk');
+
+INSERT INTO Pessoa (nome,cpf,rg,nascimento,id_endereco,id_contato) VALUES ('nobody','0','0','1-1-1000',
+(select id_endereco from endereco where numero = '0' and cep = '0'),(select id_contato from contato where nr_telefone='0')
+);
+INSERT INTO Pessoa (nome,cpf,rg,nascimento,id_endereco,id_contato) VALUES ('Joaquim Pereira','885.432.157-85','6.804.805','20-10-1990',
+(select id_endereco from endereco where numero = '102' and cep = '88005000'),(select id_contato from contato where nr_telefone='48999999888')
+);
+
+INSERT INTO Pessoa (nome,cpf,rg,nascimento,id_endereco,id_contato) VALUES ('Kevek Arara','222.444.666-88','6.157.144','12-8-1996',
+(select id_endereco from endereco where numero = '208' and cep = '88000000'),(select id_contato from contato where nr_telefone='48885422357')
+);
+
+INSERT INTO Pessoa (nome,cpf,rg,nascimento,id_endereco,id_contato) VALUES ('William Shakespeare','000.000.000-55','0.000.005','18-04-1564',
+(select id_endereco from endereco where numero = '000' and cep = '88000200'),(select id_contato from contato where nr_telefone='48456488542')
+);
+
+INSERT INTO login (login,password) VALUES ('admin','admin');
+INSERT INTO login (login,password) VALUES ('kevek','hack');
+INSERT INTO login (login,password) VALUES ('will','pisada');
+
+INSERT INTO medico (CRM,salario,id_pessoa,bl_atividade,id_login) VALUES ('0',0,(select id_pessoa from pessoa where nome='nobody'),'y',(select id_login from login where login='admin'));
+INSERT INTO medico (CRM,salario,id_pessoa,bl_atividade,id_login) VALUES ('4454654-12',12.000,(select id_pessoa from pessoa where nome='Kevek Arara'),'y',(select id_login from login where login='kevek'));	
+INSERT INTO medico (CRM,salario,id_pessoa,bl_atividade,id_login) VALUES ('4454654-12',6.780,(select id_pessoa from pessoa where nome='William Shakespeare'),'f',(select id_login from login where login='will'));
+
+INSERT INTO paciente (id_pessoa,id_medico) VALUES ((select id_pessoa from pessoa where nome='Joaquim Pereira'),(select id_medico from medico where id_pessoa=(select id_pessoa from pessoa where nome='nobody')));
+
+INSERT INTO prioridade (id_prioridade,int_prioridade,doenca,sn_fila,tm_prioridade,id_paciente,bl_atendimento) VALUES (1,1,'resfriado',1,now(),(select id_paciente from paciente where id_pessoa=(select id_pessoa from pessoa where nome='Joaquim Pereira')),'f');
+INSERT INTO prioridade (id_prioridade,int_prioridade,doenca,sn_fila,tm_prioridade,id_paciente,bl_atendimento) VALUES (2,1,'resfriado',2,now(),(select id_paciente from paciente where id_pessoa=(select id_pessoa from pessoa where nome='Joaquim Pereira')),'f');
+
+
+
+
+
+
+
+
+
+
+
