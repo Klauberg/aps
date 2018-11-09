@@ -1,3 +1,7 @@
+ALTER TABLE endereco ADD UNIQUE (numero,cep);
+ALTER TABLE login ADD UNIQUE (login);
+ALTER TABLE Pessoa ADD UNIQUE (nome);
+
 INSERT INTO contato (nr_telefone, nr_emergencia , email) VALUES ('0','0','0');
 INSERT INTO contato (nr_telefone, nr_emergencia , email) VALUES ('48999999888','48888855777','nobody@gmail.com');
 INSERT INTO contato (nr_telefone, nr_emergencia , email) VALUES ('48885422357','48452124895','someone@gmail.com');
@@ -35,6 +39,7 @@ INSERT INTO paciente (id_pessoa,id_medico) VALUES ((select id_pessoa from pessoa
 
 INSERT INTO prioridade (id_prioridade,int_prioridade,doenca,sn_fila,tm_prioridade,id_paciente,bl_atendimento) VALUES (1,1,'resfriado',1,now(),(select id_paciente from paciente where id_pessoa=(select id_pessoa from pessoa where nome='Joaquim Pereira')),'f');
 INSERT INTO prioridade (id_prioridade,int_prioridade,doenca,sn_fila,tm_prioridade,id_paciente,bl_atendimento) VALUES (2,1,'resfriado',2,now(),(select id_paciente from paciente where id_pessoa=(select id_pessoa from pessoa where nome='Joaquim Pereira')),'f');
+INSERT INTO prioridade (id_prioridade,int_prioridade,doenca,sn_fila,tm_prioridade,id_paciente,bl_atendimento) VALUES (3,5,'tiro',3,now(),(select id_paciente from paciente where id_pessoa=(select id_pessoa from pessoa where nome='Shake Every Body')),'f');
 
 
 
