@@ -1,0 +1,248 @@
+
+CREATE SEQUENCE login_id_login_seq_1_1;
+
+CREATE TABLE Login (
+                ID_Login INTEGER NOT NULL DEFAULT nextval('login_id_login_seq_1_1'),
+                Login VARCHAR(100) NOT NULL,
+                Password VARCHAR(20) NOT NULL,
+                CONSTRAINT id_login PRIMARY KEY (ID_Login)
+);
+
+
+ALTER SEQUENCE login_id_login_seq_1_1 OWNED BY Login.ID_Login;
+
+CREATE SEQUENCE log_id_log_seq;
+
+CREATE TABLE Log (
+                ID_Log INTEGER NOT NULL DEFAULT nextval('log_id_log_seq'),
+                Tabela VARCHAR(25) NOT NULL,
+                Dt_Log TIMESTAMP NOT NULL,
+                Atividade VARCHAR(150),
+                CONSTRAINT id_log PRIMARY KEY (ID_Log)
+);
+
+
+ALTER SEQUENCE log_id_log_seq OWNED BY Log.ID_Log;
+
+CREATE TABLE Quarto (
+                ID_Quarto INTEGER NOT NULL,
+                Nr_Capacidade INTEGER NOT NULL,
+                Nr_Andar INTEGER NOT NULL,
+                CONSTRAINT id_quarto PRIMARY KEY (ID_Quarto)
+);
+
+
+CREATE SEQUENCE contato_id_contato_seq_1;
+
+CREATE TABLE Contato (
+                ID_Contato INTEGER NOT NULL DEFAULT nextval('contato_id_contato_seq_1'),
+                Nr_Telefone VARCHAR(20) NOT NULL,
+                Nr_emergencia VARCHAR(20) NOT NULL,
+                email VARCHAR(260),
+                CONSTRAINT id_contato PRIMARY KEY (ID_Contato)
+);
+
+
+ALTER SEQUENCE contato_id_contato_seq_1 OWNED BY Contato.ID_Contato;
+
+CREATE TABLE Especialidade (
+                Codigo VARCHAR(50) NOT NULL,
+                Nome VARCHAR(200) NOT NULL,
+                CONSTRAINT codigo PRIMARY KEY (Codigo)
+);
+
+
+CREATE SEQUENCE endereco_id_endereco_seq;
+
+CREATE TABLE Endereco (
+                ID_Endereco INTEGER NOT NULL DEFAULT nextval('endereco_id_endereco_seq'),
+                Numero VARCHAR(45) NOT NULL,
+                Cep VARCHAR(12) NOT NULL,
+                cidade VARCHAR(100) NOT NULL,
+                estado VARCHAR(100),
+                pais VARCHAR(100) NOT NULL,
+                CONSTRAINT id_endereco PRIMARY KEY (ID_Endereco)
+);
+
+
+ALTER SEQUENCE endereco_id_endereco_seq OWNED BY Endereco.ID_Endereco;
+
+CREATE SEQUENCE pessoa_id_pessoa_seq;
+
+CREATE TABLE Pessoa (
+                ID_Pessoa INTEGER NOT NULL DEFAULT nextval('pessoa_id_pessoa_seq'),
+                nome VARCHAR(260) NOT NULL,
+                CPF VARCHAR(15),
+                RG VARCHAR(10),
+                Nascimento DATE NOT NULL,
+                ID_Endereco INTEGER NOT NULL,
+                ID_Contato INTEGER NOT NULL,
+                CONSTRAINT id_pessoa PRIMARY KEY (ID_Pessoa)
+);
+
+
+ALTER SEQUENCE pessoa_id_pessoa_seq OWNED BY Pessoa.ID_Pessoa;
+
+CREATE SEQUENCE medico_id_medico_seq;
+
+CREATE TABLE Medico (
+                ID_Medico INTEGER NOT NULL DEFAULT nextval('medico_id_medico_seq'),
+                CRM VARCHAR(15) NOT NULL,
+                Salario DOUBLE PRECISION NOT NULL,
+                ID_Pessoa INTEGER NOT NULL,
+                bl_atividade BOOLEAN NOT NULL,
+                ID_Login INTEGER NOT NULL,
+                CONSTRAINT id_medico PRIMARY KEY (ID_Medico)
+);
+
+
+ALTER SEQUENCE medico_id_medico_seq OWNED BY Medico.ID_Medico;
+
+CREATE TABLE formacao (
+                ID_Medico INTEGER NOT NULL,
+                Codigo VARCHAR(50) NOT NULL,
+                bl_exercicio BOOLEAN NOT NULL,
+                CONSTRAINT id_formacao PRIMARY KEY (ID_Medico, Codigo)
+);
+
+
+CREATE SEQUENCE paciente_id_paciente_seq;
+
+CREATE TABLE Paciente (
+                ID_Paciente INTEGER NOT NULL DEFAULT nextval('paciente_id_paciente_seq'),
+                ID_Pessoa INTEGER NOT NULL,
+                ID_Medico INTEGER NOT NULL,
+                CONSTRAINT id_paciente PRIMARY KEY (ID_Paciente)
+);
+
+
+ALTER SEQUENCE paciente_id_paciente_seq OWNED BY Paciente.ID_Paciente;
+
+CREATE TABLE Prioridade (
+                ID_Prioridade INTEGER NOT NULL,
+                INT_Prioridade INTEGER NOT NULL,
+                Doenca VARCHAR(120) NOT NULL,
+                SN_Fila INTEGER NOT NULL,
+                TM_Prioridade TIMESTAMP NOT NULL,
+                ID_Paciente INTEGER NOT NULL,
+                bl_atendimento BOOLEAN NOT NULL,
+                CONSTRAINT id_prioridade PRIMARY KEY (ID_Prioridade)
+);
+
+
+CREATE SEQUENCE visita_id_visita_seq;
+
+CREATE TABLE Visita (
+                ID_Visita INTEGER NOT NULL DEFAULT nextval('visita_id_visita_seq'),
+                Temperatura INTEGER,
+                Pressao VARCHAR(10),
+                DE_Estado VARCHAR(360) NOT NULL,
+                DT_Visita DATE NOT NULL,
+                ID_Paciente INTEGER NOT NULL,
+                ID_Medico INTEGER NOT NULL,
+                CONSTRAINT id_visita PRIMARY KEY (ID_Visita)
+);
+
+
+ALTER SEQUENCE visita_id_visita_seq OWNED BY Visita.ID_Visita;
+
+CREATE TABLE estadia (
+                ID_Paciente INTEGER NOT NULL,
+                ID_Quarto INTEGER NOT NULL,
+                Bl_infeccao BOOLEAN NOT NULL,
+                De_Sintomas VARCHAR(360) NOT NULL,
+                Dt_Estadia DATE NOT NULL,
+                CONSTRAINT id_estadia PRIMARY KEY (ID_Paciente, ID_Quarto)
+);
+
+
+ALTER TABLE Medico ADD CONSTRAINT login_medicos_fk
+FOREIGN KEY (ID_Login)
+REFERENCES Login (ID_Login)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE estadia ADD CONSTRAINT quartos_estadia_fk
+FOREIGN KEY (ID_Quarto)
+REFERENCES Quarto (ID_Quarto)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE Pessoa ADD CONSTRAINT contato_pessoa_fk
+FOREIGN KEY (ID_Contato)
+REFERENCES Contato (ID_Contato)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE formacao ADD CONSTRAINT especialidade_formacao_fk
+FOREIGN KEY (Codigo)
+REFERENCES Especialidade (Codigo)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE Pessoa ADD CONSTRAINT endereco_dados_pessoa_fk
+FOREIGN KEY (ID_Endereco)
+REFERENCES Endereco (ID_Endereco)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE Paciente ADD CONSTRAINT dados_pessoa_pacientes_fk
+FOREIGN KEY (ID_Pessoa)
+REFERENCES Pessoa (ID_Pessoa)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE Medico ADD CONSTRAINT dados_pessoa_medicos_fk
+FOREIGN KEY (ID_Pessoa)
+REFERENCES Pessoa (ID_Pessoa)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE formacao ADD CONSTRAINT medicos_formacao_fk
+FOREIGN KEY (ID_Medico)
+REFERENCES Medico (ID_Medico)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE Visita ADD CONSTRAINT medicos_visita_fk
+FOREIGN KEY (ID_Medico)
+REFERENCES Medico (ID_Medico)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE Paciente ADD CONSTRAINT medicos_pacientes_fk
+FOREIGN KEY (ID_Medico)
+REFERENCES Medico (ID_Medico)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE estadia ADD CONSTRAINT pacientes_estadia_fk
+FOREIGN KEY (ID_Paciente)
+REFERENCES Paciente (ID_Paciente)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE Visita ADD CONSTRAINT pacientes_visita_fk
+FOREIGN KEY (ID_Paciente)
+REFERENCES Paciente (ID_Paciente)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE Prioridade ADD CONSTRAINT pacientes_prioridade_fk
+FOREIGN KEY (ID_Paciente)
+REFERENCES Paciente (ID_Paciente)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
