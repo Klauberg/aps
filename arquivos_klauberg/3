@@ -1,0 +1,2 @@
+SELECT ((SELECT tm_tempo from teste where id_test=1) - (SELECT tm_tempo from teste where id_test=2));
+SELECT now() - interval;

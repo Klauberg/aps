@@ -1,0 +1,57 @@
+STATUS: AINDA INCOMPLETO
+
+CASO QUEIRA TESTAR EM SEU COMPUTADOR, PRECISA ANTES FAZER ALGUMAS CONIGURAÇÕES.
+
+
+
+1) INSTALE TODOS OS REQUESITOS COM O SEGUINTE COMANDO ABAIXO:
+
+    sudo pip3 install --upgrade distribute
+    pip3 install -r requeriments.txt
+    
+!!! IMPORTANTE !!!
+
+Para que o segundo comando funcione, você precisa estar dentro da pasta, onde requeriments.txt está localizado.
+
+2) CONFIGURAR O BANCO DE DADOS LOCAL (SEU)
+
+Para isso, abra o módulo (pasta) medical_system, e abra o database_connection.py, em um editor de textos a sua escolha.
+Edite, os campos de valor das chaves database, port, user, password, e host.
+
+Em user, coloque o usuário do banco
+Em password, a senha
+Em host, o ip
+Em por, a porta
+Em database, o nome da Database.
+
+Após informar salve o arquivo.
+
+Caso não saiba a porta, ela por padrão é a 5432, mas caso no seu caso não funcione, veja a versão do seu PostgreSQL, com o seguinte comando no terminal:
+
+    psql --version
+    
+Após, dê um locate no arquivo postgresql.conf
+
+    locate postgresql.conf
+    
+Copie o caminho que condiz com a versão que está como padrão do psql em seu computador. (apenas caso tenha duas versões, precisa se preocupar com isso. Normalmente é o primeiro caminho a ser retornado após esse comando.)
+
+Após isso, com um editor de sua escolha, digite o comando abaixo: 
+
+    sudo nano [CAMINHO DO ARQUIVO]
+    
+OBS:. No meu caso eu utilizei o nano. Use o que melhor for pra você. Importante dizer que precisa abrir como superusuário, para que possar salvar a edição feita.
+
+Lá dentro, procure por port. Após achar, você pode mudar ela, ou então, apenas copiar, e colar no arquivo database_connection.py, do sistema em questão.
+Caso edite, será necessário reiniciar o serviço do postgres com o comando:
+
+    . /etc/init.d/postgresql restart
+    
+3) Para adicionar suas tabelas, será necessário mapear no arquivo models.py, dentro da pasta catalog
+
+4) Para rodar o servidor, cole o comando no terminal:
+
+    python run.py
+    
+!!! Faça isso depois de Configurar somente !!!    
+ 
