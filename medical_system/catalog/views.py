@@ -11,7 +11,7 @@ from flask.views import MethodView
 from medical_system import app, database #Importa do __init__ as variáveis app e database
 
 #Importa os Modelos no arquivo models.py
-from medical_system.catalog.models import Produtos
+#from medical_system.catalog.models import Produtos
 
 catalog = Blueprint('catalog', __name__)
 
