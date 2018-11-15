@@ -33,8 +33,8 @@ class Pessoa(database.Model):
     cpf = database.Column(database.String(15))
     rg = database.Column(database.String(10), nullable=False)
     nascimento = database.Column(database.Date, nullable=False)
-    id_endereco = database.Column(database.Integer, nullable=False, database.ForeignKey('endereco.id_endereco'))
-    id_contato = database.Column(database.Integer, nullable=False, database.ForeignKey('contato.id_contato'))
+    id_endereco = database.Column(database.Integer, database.ForeignKey('endereco.id_endereco'), nullable=False)
+    id_contato = database.Column(database.Integer, database.ForeignKey('contato.id_contato'),  nullable=False)
     endereco = database.relationship('Endereco', foreign_keys=id_endereco)
     contato = database.relationship('Contato', foreign_keys=id_contato)
 
@@ -54,9 +54,9 @@ class Medico(database.Model):
     id_medico = database.Column(database.Integer, primary_key=True)
     crm = database.Column(database.String(20), nullable=False)
     salario = database.Column(database.Float(asdecimal=True), nullable=False)
-    id_pessoa = database.Column(database.Integer, nullable=False, database.ForeignKey('pessoa.id_pessoa'))
+    id_pessoa = database.Column(database.Integer, database.ForeignKey('pessoa.id_pessoa'), nullable=False)
     bl_atividade = database.Column(database.Boolean, nullable=False)
-    id_login = database.Column(database.Integer, nullable=False, database.ForeignKey('login.id_login'))
+    id_login = database.Column(database.Integer, database.ForeignKey('login.id_login'), nullable=False)
     pessoa = database.relationship('Pessoa', foreign_keys=id_pessoa)
     login = database.relationship('Login', foreign_keys=id_login)
 
@@ -72,8 +72,8 @@ class Medico(database.Model):
 
 class Formacao(database.Model):
     __tablename__ = 'formacao'
-    id_medico = database.Column(database.Integer, primary_key=True, autoincrement=False, database.ForeignKey('medico.id_medico'))
-    codigo = database.Column(database.String(50), primary_key=True, autoincrement=False, database.ForeignKey('especialidade.codigo'))
+    id_medico = database.Column(database.Integer, database.ForeignKey('medico.id_medico'), primary_key=True, autoincrement=False)
+    codigo = database.Column(database.String(50), database.ForeignKey('especialidade.codigo'), primary_key=True, autoincrement=False)
     bl_exercicio = database.Column(database.Boolean, nullable=False)
     cd = database.relationship('Especialidade', foreign_keys=codigo)
     medico = database.relationship('Medico', foreign_keys=id_medico)
@@ -101,8 +101,8 @@ class Especialidade(database.Model):
 class Paciente(database.Model):
     __tablename__ = 'paciente'
     id_paciente = database.Column(database.Integer, primary_key=True)
-    id_pessoa = database.Column(database.Integer, nullable=False, database.ForeignKey('pessoa.id_pessoa'))
-    id_medico = database.Column(database.Integer, nullable=False, database.ForeignKey('medico.id_medico'))
+    id_pessoa = database.Column(database.Integer, database.ForeignKey('pessoa.id_pessoa'), nullable=False)
+    id_medico = database.Column(database.Integer, database.ForeignKey('medico.id_medico'), nullable=False)
     medico = database.relationship('Medico', foreign_keys=id_medico)
     pessoa = database.relationship('Pessoa', foreign_keys=id_pessoa)
 
@@ -115,9 +115,9 @@ class Paciente(database.Model):
 
 class Estadia(database.Model):
     __tablename__ = 'estadia'
-    id_paciente = database.Column(database.Integer, primary_key=True, autoincrement=False, database.ForeignKey('paciente.id_paciente'))
-    id_quarto = database.Column(database.Integer, primary_key=True, autoincrement=False, database.ForeignKey('quarto.id_quarto'))
-    bl_infeccao = database.Colum(database.Boolean, nullable=False)
+    id_paciente = database.Column(database.Integer, database.ForeignKey('paciente.id_paciente'), primary_key=True, autoincrement=False)
+    id_quarto = database.Column(database.Integer, database.ForeignKey('quarto.id_quarto'), primary_key=True, autoincrement=False)
+    bl_infeccao = database.Column(database.Boolean, nullable=False)
     de_sintomas = database.Column(database.String(360), nullable=False)
     dt_estadia = database.Column(database.Date, nullable=False)
     quarto = database.relationship('Quarto', foreign_keys=id_quarto)
@@ -166,9 +166,9 @@ class Prioridade(database.Model):
     int_prioridade = database.Column(database.Integer, nullable=False)
     doenca = database.Column(database.String(120), nullable=False)
     sn_fila = database.Column(database.Integer, nullable=False)
-    tm_prioridade = database.Column(database.Timestamp, nullable=False)
+    tm_prioridade = database.Column(database.DateTime, server_default=database.text('LOCALTIMESTAMP'), nullable=False)
     bl_paciente = database.Column(database.Boolean, nullable=False)
-    id_paciente = database.Column(database.Integer, nullable=False, database.ForeignKey('paciente.id_paciente'))
+    id_paciente = database.Column(database.Integer, database.ForeignKey('paciente.id_paciente'), nullable=False)
     paciente = database.relationship('Paciente', foreign_keys=id_paciente)
 
     def __init__(self, int_prioridade, doenca, sn_fila, tm_prioridade, id_paciente, bl_paciente):
@@ -188,8 +188,8 @@ class Visita(database.Model):
     pressao = database.Column(database.String(10))
     de_estado = database.Column(database.String(360), nullable=False)
     dt_visita = database.Column(database.Date, nullable=False)
-    id_paciente = database.Column(database.Integer, nullable=False, database.ForeignKey('paciente.id_paciente'))
-    id_medico = database.Column(database.Integer, nullable=False, database.ForeignKey('medico.id_medico'))
+    id_paciente = database.Column(database.Integer, database.ForeignKey('paciente.id_paciente'), nullable=False)
+    id_medico = database.Column(database.Integer, database.ForeignKey('medico.id_medico'), nullable=False)
     paciente = database.relationship('Paciente', foreign_keys=id_paciente)
     medico = database.relationship('Medico', foreign_keys=id_medico)
 

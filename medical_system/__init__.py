@@ -9,6 +9,7 @@ database = SQLAlchemy(app) #Configura o SQLAlchemy conforme as configurações
 # A Importação é realizada aqui, pois primeiro o objeto precisa ser instanciado
 # para que models funcionem
 from medical_system.catalog.views import catalog #Importa BluePrint
+from medical_system.catalog import models
 
 app.register_blueprint(catalog) #Registra o BluePrint
-database.create_all() #Parametros são definitivamente criados
+database.create_all() #Permite a criação das tabelas no Banco.
