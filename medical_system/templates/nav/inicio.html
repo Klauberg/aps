@@ -2,28 +2,29 @@
 
 {% block navbar %}
 <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-  <div class="sidebar-sticky">
-    <ul class="nav flex-column">
+
+  <div class="sidebar-sticky mt-3">
+    <ul class="nav flex-column" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" href="#">
+        <a class="nav-link active" data-toggle="pill" href="#home">
           <span data-feather="home"></span>
-          Inicio <span class="sr-only">(current)</span>
+          Inicio
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" data-toggle="pill" href="#paciente">
           <span data-feather="users"></span>
           Pacientes
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" data-toggle="pill" href="#agenda">
           <span data-feather="calendar"></span>
           Agenda
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" data-toggle="pill" href="#configuracao">
           <span data-feather="settings"></span>
           Configurações
         </a>
