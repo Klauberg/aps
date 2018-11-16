@@ -4,6 +4,7 @@ import json # Importa o Modulo de JSON do Python [Nativa].
 # e Blueprint, que servirá para permitir a modularização do sistema.
 # Abort é para tratamento de erro, em requisições (Erro 404, por exemplo.)
 from flask import request, jsonify, Blueprint, abort
+from flask import render_template
 
 # Permite gerenciar os metodos GET, POST, PUT e DELETE através de métodos
 from flask.views import MethodView
@@ -16,9 +17,13 @@ from medical_system import app, database #Importa do __init__ as variáveis app 
 catalog = Blueprint('catalog', __name__)
 
 @catalog.route('/')
+def index():
+    doctor_name = "Dr. Josemar"
+    return render_template('index.html', doctor_name= doctor_name)
+
 @catalog.route('/login/')
 def login():
-    return "Bem-Vindo ao Sistema!"
+    return render_template('login.html')
 
 #Classe de Exemplo. Não Mexer no momento.
 # class ProdutosView(MethodView):

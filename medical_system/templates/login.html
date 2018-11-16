@@ -10,8 +10,8 @@
 
         .background{
             background: fixed;
-            background-image: url(/home/user/Desktop/APS/app/static/locations_bg.png);
-            background-color: #000000;
+            background-image: url({{url_for('static', filename='img/bg.png')}});
+            background-color: #ffffff;
             background-size : cover;
             background-position: middle;
             background-repeat: no-repeat;
@@ -22,16 +22,16 @@
     <title>Sistema de Monitoramento Hospitalar</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/home/user/Desktop/APS/app/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="/home/user/Desktop/APS/app/static/css/floating-labels.css" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/floating-labels.css')}}" rel="stylesheet">
   </head>
 
   <body class="background">
     <form class="form-signin" style="background-color:rgba(0,0,0,.35); border:5px; border-radius:12px;">
       <div class="text-center mb-4">
-        <img class="mb-4" src="/home/user/Desktop/APS/app/logo-site-clinica-medica-porto-horizontal-texto-animacao-verde.gif" alt="" width="100%" height="auto">
+        <img class="mb-4" src="{{url_for('static', filename='img/logo.png')}}" alt="" width="100%" height="auto">
       </div>
 
       <div class="form-label-group">

@@ -12,4 +12,4 @@ from medical_system.catalog.views import catalog #Importa BluePrint
 from medical_system.catalog import models
 
 app.register_blueprint(catalog) #Registra o BluePrint
-database.create_all() #Permite a criação das tabelas no Banco.
+database.create_all() #Permite a criação das tabelas, caso elas não existam no banco
