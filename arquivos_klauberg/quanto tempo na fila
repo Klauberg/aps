@@ -1,0 +1,9 @@
+-- Desenvolvimento de um procedimento para verificar há quanto tempo o paciente esta na fila (0.5) //-1 funcao (+1(3 funcoes))
+CREATE OR REPLACE FUNCTION tempoespera(fila integer)
+RETURNS varchar(20) AS
+$BODY$ BEGIN
+
+	RETURN (select now()-(select tm_prioridade from prioridade where sn_fila=fila));
+
+END;
+$BODY$ LANGUAGE 'plpgsql';

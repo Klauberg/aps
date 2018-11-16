@@ -1,0 +1,11 @@
+CREATE OR REPLACE FUNCTION criaPrioridade(urgencia integer,sentindo varchar(120),name varchar(260))
+RETURNS varchar(20) AS
+$BODY$ BEGIN
+
+
+insert into prioridade (id_prioridade,int_prioridade,doenca,sn_fila,tm_prioridade,id_paciente,bl_atendimento)values(
+(select id_prioridade from prioridade order by id_prioridade desc limit 1)+1,urgencia,sentindo,(select sn_fila from prioridade order by sn_fila desc limit 1)+1,now(),(select id_paciente from paciente where id_pessoa=(select id_pessoa from pessoa where nome=name)),'f');	
+	RETURN (CONCAT('Sua senha é ',(select sn_fila from prioridade order by sn_fila desc limit 1)));
+END;
+$BODY$ LANGUAGE 'plpgsql';
+

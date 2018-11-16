@@ -1,0 +1,15 @@
+-- trigger fuction para deletar a linha de quem ja foi atendido
+CREATE OR REPLACE FUNCTION deletalinha()
+RETURNS trigger AS
+$BODY$ BEGIN
+delete from prioridade where bl_atendimento = 't';
+
+	RETURN NULL;
+
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER atendido
+after update of bl_atendimento on prioridade
+for each row
+EXECUTE PROCEDURE deletalinha();

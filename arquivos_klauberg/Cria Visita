@@ -1,0 +1,14 @@
+--Cria Visita
+CREATE OR REPLACE FUNCTION criaVisita(temp integer,pres varchar(10),descricao varchar(360),data date,
+nomepaciente varchar(260),nomemedico varchar(260) )
+RETURNS varchar(20) AS
+$BODY$ BEGIN
+	
+INSERT INTO visita (temperatura,pressao,de_estado, dt_visita,id_paciente,id_medico) VALUES
+ (temp, pres,descricao,data,(select id_paciente from paciente where id_pessoa=(select id_pessoa from pessoa where nome=nomepaciente)),
+(select id_medico from medico where id_pessoa=(select id_pessoa from pessoa where nome=nomemedico)));
+
+
+	RETURN ('Cadastrado');
+END;
+$BODY$ LANGUAGE 'plpgsql';

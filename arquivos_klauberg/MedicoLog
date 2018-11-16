@@ -1,0 +1,19 @@
+-- Criação de uma trigger funcion de log para quando um médico responsável é atribuído a um paciente 
+
+CREATE OR REPLACE FUNCTION novomedico()
+RETURNS trigger AS
+$BODY$ BEGIN
+INSERT INTO Log (tabela,dt_log,Atividade) Values ('Paciente',now(),CONCAT(
+(select nome from pessoa where id_pessoa=(select id_pessoa from medico where id_medico=new.ID_Medico))
+,' foi adicionado como novo medico no lugar do ',
+(select nome from pessoa where id_pessoa=(select id_pessoa from medico where id_medico=old.id_medico)))); 
+
+	RETURN NULL;
+
+END;
+$BODY$ LANGUAGE 'plpgsql';
+--
+CREATE TRIGGER updatemedico
+after UPDATE of id_medico on paciente
+FOR EACH ROW
+EXECUTE PROCEDURE novomedico();

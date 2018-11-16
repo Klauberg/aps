@@ -1,0 +1,8 @@
+CREATE OR REPLACE FUNCTION prioridadefila()
+RETURNS SETOF prioridade as 
+$BODY$ BEGIN
+
+return query(SELECT * from prioridade order by int_prioridade DESC); 
+
+END;
+$BODY$ LANGUAGE 'plpgsql';
