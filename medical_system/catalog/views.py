@@ -16,11 +16,12 @@ from medical_system import app, database #Importa do __init__ as variáveis app 
 
 catalog = Blueprint('catalog', __name__)
 
-@catalog.route('/')
-def index():
-    doctor_name = "Dr. Josemar"
+@catalog.route('/sistema/<medico>')
+def index(medico):
+    doctor_name = f"Dr. {medico}"
     return render_template('index.html', doctor_name= doctor_name)
 
+@catalog.route('/')
 @catalog.route('/login/')
 def login():
     return render_template('login.html')
