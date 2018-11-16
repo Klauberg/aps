@@ -29,7 +29,7 @@
   </head>
 
   <body class="background">
-    <form class="form-signin" style="background-color:rgba(0,0,0,.35); border:5px; border-radius:12px;">
+    <form class="form-signin" style="background-color:rgba(23,162,184,.35); border:5px; border-radius:12px;">
       <div class="text-center mb-4">
         <img class="mb-4" src="{{url_for('static', filename='img/logo.png')}}" alt="" width="100%" height="auto">
       </div>
@@ -43,13 +43,9 @@
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <label for="inputPassword">Senha</label>
       </div>
-
-      <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="remember-me"> Lembrar
-        </label>
-      </div>
+      <div style="padding-top: 1cm;">
       <button class="btn btn-lg btn-info btn-block" type="submit">Entrar</button>
+      </div>
     </form>
   </body>
 </html>
