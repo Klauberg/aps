@@ -24,13 +24,18 @@ CREATE TABLE Log (
 
 ALTER SEQUENCE log_id_log_seq OWNED BY Log.ID_Log;
 
+CREATE SEQUENCE quarto_id_quarto_seq;
+
 CREATE TABLE Quarto (
-                ID_Quarto INTEGER NOT NULL,
+                ID_Quarto INTEGER NOT NULL DEFAULT nextval('quarto_id_quarto_seq'),
                 Nr_Capacidade INTEGER NOT NULL,
                 Nr_Andar INTEGER NOT NULL,
+                Nr_usando INTEGER NOT NULL,
                 CONSTRAINT id_quarto PRIMARY KEY (ID_Quarto)
 );
 
+
+ALTER SEQUENCE quarto_id_quarto_seq OWNED BY Quarto.ID_Quarto;
 
 CREATE SEQUENCE contato_id_contato_seq_1;
 
