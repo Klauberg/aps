@@ -1,0 +1,19 @@
+--Libera Estadia
+CREATE OR REPLACE FUNCTION liberaEstadia(name varchar(260),room integer)
+RETURNS varchar(20) AS
+$BODY$ BEGIN
+if ((select id_quarto from estadia where id_paciente=(select id_paciente from paciente where id_pessoa=(select id_pessoa from pessoa where nome=name)))=room) then 
+	
+	delete from estadia where id_quarto=room and id_paciente=(select id_paciente from paciente where id_pessoa=(select id_pessoa from pessoa where nome=name));
+	update quarto set nr_usando = ((select nr_usando from quarto where id_quarto=room)-1) where id_quarto = room;
+
+	RETURN ('Retirado');
+
+else
+	RETURN ('Confira o nome e quarto');  	
+END IF;	
+
+	
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
