@@ -1,0 +1,17 @@
+--Log Libera Quarto
+CREATE OR REPLACE FUNCTION velhoHospitazado()
+RETURNS trigger AS
+$BODY$ BEGIN
+INSERT INTO Log (tabela,dt_log,Atividade) Values ('Estadia',now(),CONCAT(
+(select nome from pessoa where id_pessoa=(select id_pessoa from paciente where id_paciente=old.id_paciente))
+,' libero o quarto ',old.id_quarto)); 
+
+	RETURN NULL;
+
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER confereDeshospitalizado
+after delete on estadia
+FOR EACH ROW
+EXECUTE PROCEDURE velhoHospitazado();

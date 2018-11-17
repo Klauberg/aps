@@ -1,0 +1,17 @@
+--Entrou no quarto
+CREATE OR REPLACE FUNCTION novoHospitazado()
+RETURNS trigger AS
+$BODY$ BEGIN
+INSERT INTO Log (tabela,dt_log,Atividade) Values ('Estadia',now(),CONCAT(
+(select nome from pessoa where id_pessoa=(select id_pessoa from paciente where id_paciente=new.id_paciente))
+,' foi hospitalizado com suspeita de ',new.de_sintomas)); 
+
+	RETURN NULL;
+
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER confereHospitalizado
+after insert on estadia
+FOR EACH ROW
+EXECUTE PROCEDURE novoHospitazado();

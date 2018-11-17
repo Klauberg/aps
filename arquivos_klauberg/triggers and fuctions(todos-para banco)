@@ -160,7 +160,6 @@ END;
 $BODY$ LANGUAGE 'plpgsql';
 
 
-select criaestadia('Shake Every Body',2,'f','Parada Respiratoria','now()');
 
 --Libera Estadia
 CREATE OR REPLACE FUNCTION liberaEstadia(name varchar(260),room integer)
@@ -181,8 +180,53 @@ END IF;
 END;
 $BODY$ LANGUAGE 'plpgsql';
 
+
+
+--Entrou no quarto
+CREATE OR REPLACE FUNCTION novoHospitazado()
+RETURNS trigger AS
+$BODY$ BEGIN
+INSERT INTO Log (tabela,dt_log,Atividade) Values ('Estadia',now(),CONCAT(
+(select nome from pessoa where id_pessoa=(select id_pessoa from paciente where id_paciente=new.id_paciente))
+,' foi hospitalizado com suspeita de ',new.de_sintomas)); 
+
+	RETURN NULL;
+
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER confereHospitalizado
+after insert on estadia
+FOR EACH ROW
+EXECUTE PROCEDURE novoHospitazado();
+
+--Log Libera Quarto
+CREATE OR REPLACE FUNCTION velhoHospitazado()
+RETURNS trigger AS
+$BODY$ BEGIN
+INSERT INTO Log (tabela,dt_log,Atividade) Values ('Estadia',now(),CONCAT(
+(select nome from pessoa where id_pessoa=(select id_pessoa from paciente where id_paciente=old.id_paciente))
+,' libero o quarto ',old.id_quarto)); 
+
+	RETURN NULL;
+
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER confereDeshospitalizado
+after delete on estadia
+FOR EACH ROW
+EXECUTE PROCEDURE velhoHospitazado();
+
+--logs:
+
+select criaestadia('Shake Every Body',2,'f','Parada Respiratoria','now()');
 select liberaEstadia('Shake Every Body','2');
 
+update paciente SET id_medico = 2 where id_paciente= 1;
+update paciente SET id_medico = 4 where id_paciente= 2;
+
+--
 
 
 
