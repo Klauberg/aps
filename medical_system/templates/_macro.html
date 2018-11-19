@@ -1,0 +1,15 @@
+{% macro login_form(field) %}
+    {{ field(**kwargs)|safe }}
+
+
+    {% if field.errors%}
+        {% for error in field.errors %}
+            <div class="alert alert-danger alert-dismissible fade show">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Erro: </strong>{{ error }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+{% endmacro %}

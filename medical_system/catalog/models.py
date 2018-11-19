@@ -1,4 +1,5 @@
 from medical_system import database #Importa a Database do módulo medical_system (pasta)
+from flask_login import UserMixin
 
 '''
 IMPORTANTE
@@ -138,16 +139,18 @@ class Quarto(database.Model):
     id_quarto = database.Column(database.Integer, primary_key=True, autoincrement=False)
     nr_capacidade = database.Column(database.Integer, nullable=False)
     nr_andar = database.Column(database.Integer, nullable=False)
+    nr_usando = database.Column(database.Integer, nullable=False)
 
-    def __init__ (self, id_quarto, nr_capacidade, nr_andar):
+    def __init__ (self, id_quarto, nr_capacidade, nr_andar, nr_usando):
         self.id_quarto = id_quarto
         self.nr_capacidade = nr_capacidade
         self.nr_andar = nr_andar
+        self.nr_usando = nr_usando
 
     def __repr__(self):
         return f"<Quarto : {self.id_quarto}>"
 
-class Login(database.Model):
+class Login(database.Model, UserMixin):
     __tablename__ = 'login'
     id_login = database.Column(database.Integer, primary_key=True)
     login = database.Column(database.String(100), nullable=False)
@@ -156,6 +159,9 @@ class Login(database.Model):
     def __init__(self, login, password):
         self.login = login
         self.password = password
+
+    def get_id(self):
+        return self.id_login
 
     def __repr__(self):
         return f"<Login : {self.id_login}>"
