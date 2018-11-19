@@ -47,8 +47,8 @@ def logout():
         LogoutControl()
     return redirect(url_for('catalog.login')), 302
 
-@catalog.route('/ajax-login', methods=['POST'])
-def ajax_login()
+#@catalog.route('/ajax-login', methods=['POST'])
+#def ajax_login()
 
 @login_manager.user_loader
 def load_user(user_id):
