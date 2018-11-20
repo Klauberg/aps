@@ -1,5 +1,5 @@
-from medical_system.catalog.models import Login
-from flask_login import login_user, logout_user
+from medical_system.catalog.models import Login, Paciente, Pessoa, Medico
+from flask_login import login_user, logout_user, current_user
 from flask import flash
 
 class LoginControl():
@@ -14,7 +14,18 @@ class LoginControl():
                 user_id = Login.query.get(user.id_login)
                 login_user(user_id)
                 return True
+            else:
+                flash("Usuário ou Senha Inválido(a)")
 
 class LogoutControl():
     def __init__ (self):
         logout_user()
+
+class Doctor():
+    def __init__(self):
+            medico = Medico.query.filter_by(id_login=int(current_user.get_id())).first()
+            pessoa = Pessoa.query.filter_by(id_pessoa=medico.id_pessoa).first()
+            if pessoa:
+                self.name = str(pessoa.nome)
+            else:
+                self.name = "Sem Nome"

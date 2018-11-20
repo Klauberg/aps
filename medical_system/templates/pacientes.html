@@ -1,0 +1,34 @@
+<body>
+<div class="container">
+  <br>
+  <h2>Lista de Pacientes</h2>
+      <p>Esta é a Lista de Pacientes, que possuem esse usuário como médico.</p>
+      <a href="" class="btn btn-success btn-sm"><span>Adicionar</span></a>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Doença</th>
+        <th>Quarto</th>
+        <th>Detalhes</th>
+        <th>Editar</th>
+        <th>Deletar</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for paciente in pacientes %}
+      <tr>
+        <td>{{ nome_paciente }}</td>
+        <td>{{ doenca_paciente }}</td>
+        <td>{{ quarto_paciente }}</td>
+        <td align="center"><button class="btn btn-info btn-sm">Ver Detalhes</button></td>
+        <td align="center"><button class="btn btn-warning btn-sm">Editar</button></td>
+        <td align="center"><button class="btn btn-danger btn-sm"">Deletar</button></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

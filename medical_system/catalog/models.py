@@ -173,7 +173,7 @@ class Prioridade(database.Model):
     doenca = database.Column(database.String(120), nullable=False)
     sn_fila = database.Column(database.Integer, nullable=False)
     tm_prioridade = database.Column(database.DateTime, server_default=database.text('LOCALTIMESTAMP'), nullable=False)
-    bl_paciente = database.Column(database.Boolean, nullable=False)
+    bl_atendimento = database.Column(database.Boolean, nullable=False)
     id_paciente = database.Column(database.Integer, database.ForeignKey('paciente.id_paciente'), nullable=False)
     paciente = database.relationship('Paciente', foreign_keys=id_paciente)
 

@@ -11,7 +11,7 @@ from medical_system import app, database, admin, login_manager #Importa do __ini
 #Importa os Modelos no arquivo models.py
 #from medical_system.catalog.models import Produtos
 from medical_system.catalog.forms import LoginForm #Formulário de Login
-from medical_system.catalog.controllers import LoginControl, LogoutControl
+from medical_system.catalog.controllers import LoginControl, LogoutControl, Doctor
 from flask_admin.contrib.sqla import ModelView
 from medical_system.catalog.models import Login, Medico, Endereco, Especialidade, Formacao, Contato
 from flask_login import current_user
@@ -25,8 +25,8 @@ def error404(error):
 @catalog.route('/sistema/', methods= ['GET', 'POST'])
 def index():
     if current_user.is_authenticated:
-        doctor_name = "Dr. Josemar"
-        return render_template('index.html', doctor_name= doctor_name)
+        doctor_name = f'Dr. {Doctor().name}'
+        return render_template('index.html', doctor_name= doctor_name, paciente='teste')
     return redirect(url_for('catalog.login')), 302
 
 @catalog.route('/', methods = ['GET', 'POST'])
@@ -46,9 +46,6 @@ def logout():
     if current_user.is_authenticated:
         LogoutControl()
     return redirect(url_for('catalog.login')), 302
-
-#@catalog.route('/ajax-login', methods=['POST'])
-#def ajax_login()
 
 @login_manager.user_loader
 def load_user(user_id):
