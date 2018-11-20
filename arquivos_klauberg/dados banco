@@ -43,9 +43,9 @@ INSERT INTO prioridade (id_prioridade,int_prioridade,doenca,sn_fila,tm_prioridad
 INSERT INTO prioridade (id_prioridade,int_prioridade,doenca,sn_fila,tm_prioridade,id_paciente,bl_atendimento) VALUES (2,1,'resfriado',2,now(),(select id_paciente from paciente where id_pessoa=(select id_pessoa from pessoa where nome='Joaquim Pereira')),'f');
 INSERT INTO prioridade (id_prioridade,int_prioridade,doenca,sn_fila,tm_prioridade,id_paciente,bl_atendimento) VALUES (3,5,'tiro',3,now(),(select id_paciente from paciente where id_pessoa=(select id_pessoa from pessoa where nome='Shake Every Body')),'f');
 
-INSERT INTO quarto VALUES (1,5,1,0);
-INSERT INTO quarto VALUES (2,5,1,0);
-INSERT INTO quarto VALUES (3,5,1,0);
+INSERT INTO quarto VALUES (101,5,1,0);
+INSERT INTO quarto VALUES (102,5,1,0);
+INSERT INTO quarto VALUES (103,5,1,0);
 
 
 
