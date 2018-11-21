@@ -16,11 +16,11 @@
       </tr>
     </thead>
     <tbody>
-      {% for paciente in pacientes %}
+      {% for paciente in pessoa %}
       <tr>
-        <td>{{ nome_paciente }}</td>
-        <td>{{ doenca_paciente }}</td>
-        <td>{{ quarto_paciente }}</td>
+        <td>{{ paciente[1] }}</td>
+        <td>{{ paciente[2] }}</td>
+        <td>{{ paciente[3] }}</td>
         <td align="center"><button class="btn btn-info btn-sm">Ver Detalhes</button></td>
         <td align="center"><button class="btn btn-warning btn-sm">Editar</button></td>
         <td align="center"><button class="btn btn-danger btn-sm"">Deletar</button></td>

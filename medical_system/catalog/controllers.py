@@ -1,5 +1,6 @@
-from medical_system.catalog.models import Login, Paciente, Pessoa, Medico
+from medical_system.catalog.models import Login, Paciente, Pessoa, Medico, Estadia, Prioridade, Quarto
 from flask_login import login_user, logout_user, current_user
+from medical_system import database
 from flask import flash
 
 class LoginControl():
@@ -29,3 +30,10 @@ class Doctor():
                 self.name = str(pessoa.nome)
             else:
                 self.name = "Sem Nome"
+
+
+class Pacientes():
+
+    def __init__(self):
+        self.paciente = database.session.query(Pessoa.nome, Estadia.id_quarto, Prioridade.doenca).filter(Pessoa.id_pessoa == Paciente.id_pessoa)
+        print(self.paciente)

@@ -2,7 +2,8 @@ import json # Importa o Modulo de JSON do Python [Nativa].
 # Importa do Flask as Bibliotecas de Request, Jsonify(Para comunicação JSON),
 # e Blueprint, que servirá para permitir a modularização do sistema.
 # Abort é para tratamento de erro, em requisições (Erro 404, por exemplo.)
-from flask import request, jsonify, Blueprint, abort
+import datetime
+from flask import request, jsonify, Blueprint, abort, session
 from flask import render_template
 from flask import redirect, url_for
 # Permite gerenciar os metodos GET, POST, PUT e DELETE através de métodos
@@ -11,7 +12,7 @@ from medical_system import app, database, admin, login_manager #Importa do __ini
 #Importa os Modelos no arquivo models.py
 #from medical_system.catalog.models import Produtos
 from medical_system.catalog.forms import LoginForm #Formulário de Login
-from medical_system.catalog.controllers import LoginControl, LogoutControl, Doctor
+from medical_system.catalog.controllers import LoginControl, LogoutControl, Doctor, Pacientes
 from flask_admin.contrib.sqla import ModelView
 from medical_system.catalog.models import Login, Medico, Endereco, Especialidade, Formacao, Contato
 from flask_login import current_user
@@ -22,11 +23,18 @@ catalog = Blueprint('catalog', __name__)
 def error404(error):
     return render_template('404.html'), 404
 
+@app.before_request
+def before_request():
+    session.permanent = True
+    app.permanent_session_lifetime = datetime.timedelta(minutes=20)
+    session.modified = True
+
 @catalog.route('/sistema/', methods= ['GET', 'POST'])
 def index():
     if current_user.is_authenticated:
         doctor_name = f'Dr. {Doctor().name}'
-        return render_template('index.html', doctor_name= doctor_name, paciente='teste')
+        paciente = Pacientes().paciente
+        return render_template('index.html', doctor_name=doctor_name, paciente=paciente), 200
     return redirect(url_for('catalog.login')), 302
 
 @catalog.route('/', methods = ['GET', 'POST'])
