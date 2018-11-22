@@ -1,4 +1,3 @@
-import json # Importa o Modulo de JSON do Python [Nativa].
 # Importa do Flask as Bibliotecas de Request, Jsonify(Para comunicação JSON),
 # e Blueprint, que servirá para permitir a modularização do sistema.
 # Abort é para tratamento de erro, em requisições (Erro 404, por exemplo.)
@@ -29,12 +28,28 @@ def before_request():
     app.permanent_session_lifetime = datetime.timedelta(minutes=20)
     session.modified = True
 
+@catalog.route('/sistema/paciente/cadastrar')
+def cadastro_paciente():
+    pass
+
+@catalog.route('/sistema/paciente/editar/<int:id>', methods=['GET', 'POST'])
+def editar_paciente(id=None):
+    if id == None: abort(404)
+
+@catalog.route('/sistema/paciente/deletar/<int:id>')
+def deletar_paciente(id=None):
+    if id == None: abort(404)
+
+@catalog.route('/sistema/paciente/<int:id>')
+def detalhes_paciente(id=None):
+    if id==None: abort(404)
+
 @catalog.route('/sistema/', methods= ['GET', 'POST'])
 def index():
     if current_user.is_authenticated:
         doctor_name = f'Dr. {Doctor().name}'
-        paciente = Pacientes().paciente
-        return render_template('index.html', doctor_name=doctor_name, paciente=paciente), 200
+        paciente = Pacientes()
+        return render_template('index.html', doctor_name=doctor_name, paciente=paciente.paciente), 200
     return redirect(url_for('catalog.login')), 302
 
 @catalog.route('/', methods = ['GET', 'POST'])
@@ -48,7 +63,6 @@ def login():
         return redirect(url_for('catalog.index')), 302
     return render_template('login.html', form = login_form), 200
 
-@catalog.route('/sistema/logout/')
 @catalog.route('/logout/')
 def logout():
     if current_user.is_authenticated:

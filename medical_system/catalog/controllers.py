@@ -1,4 +1,4 @@
-from medical_system.catalog.models import Login, Paciente, Pessoa, Medico, Estadia, Prioridade, Quarto
+from medical_system.catalog.models import Login, Paciente, Pessoa, Medico, Estadia, Prioridade, Quarto, Contato
 from flask_login import login_user, logout_user, current_user
 from medical_system import database
 from flask import flash
@@ -24,16 +24,19 @@ class LogoutControl():
 
 class Doctor():
     def __init__(self):
-            medico = Medico.query.filter_by(id_login=int(current_user.get_id())).first()
-            pessoa = Pessoa.query.filter_by(id_pessoa=medico.id_pessoa).first()
-            if pessoa:
-                self.name = str(pessoa.nome)
-            else:
-                self.name = "Sem Nome"
-
+        medico = Medico.query.filter_by(id_login=int(current_user.get_id())).first()
+        pessoa = Pessoa.query.filter_by(id_pessoa=medico.id_pessoa).first()
+        if pessoa:
+            self.name = str(pessoa.nome)
+        else:
+            self.name = "Sem Nome"
 
 class Pacientes():
-
     def __init__(self):
-        self.paciente = database.session.query(Pessoa.nome, Estadia.id_quarto, Prioridade.doenca).filter(Pessoa.id_pessoa == Paciente.id_pessoa)
+        medico = Medico.query.filter_by(id_login=int(current_user.get_id())).first_or_404()
+        paciente_query = database.session.query(Pessoa.nome, Contato.nr_emergencia, Estadia.id_quarto, Paciente.id_paciente, Paciente.id_medico).filter(Pessoa.id_pessoa==Paciente.id_pessoa).filter(Contato.id_contato==Pessoa.id_contato).filter(Estadia.id_paciente==Paciente.id_paciente).all()
+        self.paciente = []
+        for pessoa in paciente_query:
+            if paciente_query[0][4] == medico.id_medico:
+                self.paciente.append(pessoa)
         print(self.paciente)

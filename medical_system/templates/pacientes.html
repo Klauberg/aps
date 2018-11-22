@@ -8,7 +8,7 @@
     <thead>
       <tr>
         <th>Nome</th>
-        <th>Doença</th>
+        <th>Tel. Emergência</th>
         <th>Quarto</th>
         <th>Detalhes</th>
         <th>Editar</th>
@@ -16,14 +16,14 @@
       </tr>
     </thead>
     <tbody>
-      {% for paciente in pessoa %}
+      {% for pessoa in paciente %}
       <tr>
-        <td>{{ paciente[1] }}</td>
-        <td>{{ paciente[2] }}</td>
-        <td>{{ paciente[3] }}</td>
-        <td align="center"><button class="btn btn-info btn-sm">Ver Detalhes</button></td>
-        <td align="center"><button class="btn btn-warning btn-sm">Editar</button></td>
-        <td align="center"><button class="btn btn-danger btn-sm"">Deletar</button></td>
+        <td>{{ paciente[0][0] }}</td>
+        <td>{{ paciente[0][1] }}</td>
+        <td>{{ paciente[0][2] }}</td>
+        <td align="center"><a class="btn btn-info btn-sm" style="color:white" href="/paciente/{{ paciente[0][3] }}">Ver Detalhes</a></td>
+        <td align="center"><a class="btn btn-warning btn-sm" style="color:white">Editar</a></td>
+        <td align="center"><a class="btn btn-danger btn-sm" style="color:white">Deletar</a></td>
       </tr>
       {% endfor %}
     </tbody>
