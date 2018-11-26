@@ -1,0 +1,244 @@
+<div id="container" style="padding:10px;">
+{% from "_macro.html" import paciente_form %}
+    <a id="detalhes" class="btn btn-secondary" href="/sistema/">Voltar</a>
+    <h2 align="center" style="padding: 35px;"> Cadastrar Paciente </h2>
+    <form method="POST" class="cadastro-usuario" id="cadastro">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-label-group">
+            <label style="color:red;">*</label><label>Nome Completo:</label>
+            {{ paciente_form(form.nome, class="form-control", id="inputNome", placeholder="Nome Completo") }}
+            <div id="nome" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label>CPF:</label>
+            {{ paciente_form(form.cpf, class="form-control", id="inputCPF", placeholder="CPF", maxlength="11") }}
+            <div id="cpf" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label>RG:</label>
+            {{ paciente_form(form.rg, class="form-control", id="inputRG", placeholder="RG", maxlength="10") }}
+            <div id="rg" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;"">
+            <label style="color:red;">*</label><label for="diaa">Data de Nascimento:</label>
+            {{ paciente_form(form.nascimento, id="inputNascimento",type="date", class="form-control col-2") }}
+            <div id="nascimento" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label style="color:red;">*</label><label>Telefone:</label>
+            {{ paciente_form(form.telefone, class="form-control", id="inputTelefone", placeholder="Telefone", maxlength="14") }}
+            <div id="telefone" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label style="color:red;">*</label><label>Telefone de Emergência:</label>
+            {{ paciente_form(form.emergencia, class="form-control", id="inputEmergencia", placeholder="Telefone de Emergência", maxlength="14") }}
+            <div id="emergencia" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label>E-mail:</label>
+            {{ paciente_form(form.email, class="form-control", id="inputEmail", placeholder="E-mail", maxlength="150") }}
+            <div id="email" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label style="color:red;">*</label><label>CEP:</label>
+            {{ paciente_form(form.cep, class="form-control", id="inputCEP", placeholder="CEP", maxlength="12") }}
+            <div id="cep" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label style="color:red;">*</label><label>Número:</label>
+            {{ paciente_form(form.numero, class="form-control", id="inputNumero", placeholder="Número", maxlength="10") }}
+            <div id="numero" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label style="color:red;">*</label><label>Cidade:</label>
+            {{ paciente_form(form.cidade, class="form-control", id="inputCidade", placeholder="Cidade", maxlength="85") }}
+            <div id="cidade" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label>Estado:</label>
+            {{ paciente_form(form.estado, class="form-control", id="inputEstado", placeholder="Estado", maxlength="85") }}
+            <div id="estado" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label style="color:red;">*</label><label>Pais:</label>
+            {{ paciente_form(form.pais, class="form-control", id="inputPais", placeholder="Pais", maxlength="85") }}
+            <div id="pais" class="">
+            </div>
+        </div>
+        <div style="padding-top: 20px; padding-bottom: 50px;">
+            <button id="botao" class="btn btn-lg btn-success btn-block" type="submit">Cadastrar</button>
+        </div>
+    </form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        function ajax_cadastro(){
+            $.ajax({
+                url: '/paciente/cadastrar',
+                data: $('form').serialize(),
+                type: 'POST',
+                success: function(response){
+                    console.log(response);
+                    var data = $.parseJSON(response);
+                    if (data.letracpf == true){
+                        $("#inputCPF").addClass("is-invalid");
+                        $("#cpf").addClass("invalid-feedback");
+                        $("#cpf").html("Inclua um CPF válido.");
+                    };
+                    if (data.tamanhocpf == true){
+                        $("#inputCPF").addClass("is-invalid");
+                        $("#cpf").addClass("invalid-feedback");
+                        $("#cpf").html("Tamanho do CPF inválido.");
+                    };
+                    if (data.tamanhocpf == false && data.letracpf == false){
+                        $("#inputCPF").removeClass("is-invalid");
+                        $("#cpf").removeClass("invalid-feedback");
+                        $("#cpf").html("")
+                    };
+                    if (data.email == true){
+                        $("#inputEmail").addClass("is-invalid");
+                        $("#email").addClass("invalid-feedback");
+                        $("#email").html("Insira um E-mail válido");
+                    };
+                    if (data.tamanhoemail == true){
+                        $("#inputEmail").addClass("is-invalid");
+                        $("#email").addClass("invalid-feedback");
+                        $("#email").html("Tamanho de Email inválido.");
+                    };
+                    if (data.email == false && data.tamanhoemail == false){
+                        $("#inputEmail").removeClass("is-invalid");
+                        $("#email").removeClass("invalid-feedback");
+                        $("#email").html("")
+                    };
+                    if (data.letrarg == true){
+                        $("#inputRG").addClass("is-invalid");
+                        $("#rg").addClass("invalid-feedback");
+                        $("#rg").html("Insira um RG que contenha números.");
+                    };
+                    if (data.tamanhorg == true){
+                        $("#inputRG").addClass("is-invalid");
+                        $("#rg").addClass("invalid-feedback");
+                        $("#rg").html("Tamanho de RG inválido.");
+                    };
+                    if (data.letrarg == false && data.tamanhorg == false){
+                        $("#inputRG").removeClass("is-invalid");
+                        $("#rg").removeClass("invalid-feedback");
+                        $("#rg").html("")
+                    };
+                    if (data.letratel == true){
+                        $("#inputTelefone").addClass("is-invalid");
+                        $("#telefone").addClass("invalid-feedback");
+                        $("#telefone").html("Insira somente números.");
+                    };
+                    if (data.tamanhotelefone == true){
+                        $("#inputTelefone").addClass("is-invalid");
+                        $("#telefone").addClass("invalid-feedback");
+                        $("#telefone").html("Tamanho de telefone inválido.");
+                    };
+                    if (data.letratel == false && data.tamanhotelefone == false){
+                        $("#inputTelefone").removeClass("is-invalid");
+                        $("#telefone").removeClass("invalid-feedback");
+                        $("#telefone").html("")
+                    };
+                    if (data.letraemg == true){
+                        $("#inputEmergencia").addClass("is-invalid");
+                        $("#emergencia").addClass("invalid-feedback");
+                        $("#emergencia").html("Insira somente números.");
+                    };
+                    if (data.tamanhoemergencia == true){
+                        $("#inputEmergencia").addClass("is-invalid");
+                        $("#emergencia").addClass("invalid-feedback");
+                        $("#emergencia").html("Tamanho de telefone inválido.");
+                    };
+                    if (data.letraemg == false && data.tamanhoemergencia == false){
+                        $("#inputEmergencia").removeClass("is-invalid");
+                        $("#emergencia").removeClass("invalid-feedback");
+                        $("#emergencia").html("")
+                    };
+                    if (data.letracep == true){
+                        $("#inputCEP").addClass("is-invalid");
+                        $("#cep").addClass("invalid-feedback");
+                        $("#cep").html("Insira somente números.");
+                    };
+                    if (data.tamanhocep == true){
+                        $("#inputCEP").addClass("is-invalid");
+                        $("#cep").addClass("invalid-feedback");
+                        $("#cep").html("Tamanho do CEP inválido.");
+                    };
+                    if (data.letracep == false && data.tamanhocep == false){
+                        $("#inputCEP").removeClass("is-invalid");
+                        $("#cep").removeClass("invalid-feedback");
+                        $("#cep").html("")
+                    };
+                    if (data.letranum == true){
+                        $("#inputNumero").addClass("is-invalid");
+                        $("#numero").addClass("invalid-feedback");
+                        $("#numero").html("Insira somente números.");
+                    };
+                    if (data.tamanhonumero == true){
+                        $("#inputNumero").addClass("is-invalid");
+                        $("#numero").addClass("invalid-feedback");
+                        $("#numero").html("Tamanho do Número inválido.");
+                    };
+                    if (data.letranum == false && data.tamanhonumero == false){
+                        $("#inputNumero").removeClass("is-invalid");
+                        $("#numero").removeClass("invalid-feedback");
+                        $("#numero").html("")
+                    };
+                    if (data.tamanhocidade == true){
+                        $("#inputCidade").addClass("is-invalid");
+                        $("#cidade").addClass("invalid-feedback");
+                        $("#cidade").html("Tamanho do campo inválido.");
+                    };
+                    if (data.tamanhocidade == false){
+                        $("#inputCidade").removeClass("is-invalid");
+                        $("#cidade").removeClass("invalid-feedback");
+                        $("#cidade").html("")
+                    };
+                    if (data.tamanhoestado == true){
+                        $("#inputEstado").addClass("is-invalid");
+                        $("#estado").addClass("invalid-feedback");
+                        $("#estado").html("Tamanho do campo inválido.");
+                    };
+                    if (data.tamanhoestado == false){
+                        $("#inputEstado").removeClass("is-invalid");
+                        $("#estado").removeClass("invalid-feedback");
+                        $("#estado").html("")
+                    };
+                    if (data.tamanhopais == true){
+                        $("#inputPais").addClass("is-invalid");
+                        $("#pais").addClass("invalid-feedback");
+                        $("#pais").html("Tamanho do campo inválido.");
+                    };
+                    if (data.tamanhopais == false){
+                        $("#inputPais").removeClass("is-invalid");
+                        $("#pais").removeClass("invalid-feedback");
+                        $("#pais").html("")
+                    };
+                    if (data.check == false){
+                        window.location = '/';
+                    };
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        };
+        $("#cadastro").submit(function(event){
+            event.preventDefault();
+            ajax_cadastro();
+        });
+    });
+</script>
+</div>

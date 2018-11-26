@@ -1,0 +1,51 @@
+<div id="container-visita" style="padding:10px;">
+    <a id="detalhes" class="btn btn-secondary" href="/sistema/">Voltar</a>
+    <h2 align="center" style="padding: 35px;"> Detalhes sobre o Paciente </h2>
+    <h5>Informações Pesoais</h5>
+    <div>
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>Nome:</th>
+                <td>{{ nome_paciente }}</td>
+            </tr>
+        </table>
+    </div>
+    <h5 style="padding-top: 10px;">Informações de Visita</h5>
+    <div>
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>Temperatura:</th>
+                <td>{{ temperatura }}</td>
+            </tr>
+            <tr>
+                <th>Pressão</th>
+                <td>{{ pressao }}</td>
+            </tr>
+            <tr>
+                <th>Desc. Estado:</th>
+                <td>{{ de_estado }}</td>
+            </tr>
+            <tr>
+                <th>Data de Visita:</th>
+                <td>{{ dt_visita }}</td>
+            </tr>
+        </table>
+    </div>
+    <h5 style="padding-top: 10px;">Informações de Estadia</h5>
+    <div>
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>Infecção:</th>
+                <td>{{ bl_infeccao }}</td>
+            </tr>
+            <tr>
+                <th>Descrição Sintomas:</th>
+                <td>{{ de_sintomas }}</td>
+            </tr>
+            <tr>
+                <th>Data de Estadia:</th>
+                <td>{{ dt_estadia }}</td>
+            </tr>
+        </table>
+    </div>
+</div>

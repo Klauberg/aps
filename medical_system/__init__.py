@@ -4,7 +4,6 @@ from flask_wtf.csrf import CSRFProtect
 from flask_admin import Admin
 from flask_login import LoginManager
 
-
 app = Flask(__name__) #Cria uma instância do flask
 app.config.from_pyfile('config.py') #Configura, através de um arquivo Externo
 csrf = CSRFProtect(app)

@@ -14,16 +14,24 @@ END;
 $BODY$ LANGUAGE 'plpgsql';
 
 --
--- Cria Paciente
-CREATE OR REPLACE FUNCTION criaPaciente(telefone varchar(20),emergencia varchar(20), email varchar(260),nrnumero varchar(45),nrcep varchar(12),cidade varchar(100),estado varchar(100),pais varchar(100),name varchar(260),cpf varchar(15), rg varchar(10),nascimento date)
-RETURNS varchar(20) AS
-$BODY$ BEGIN
+--CREATE OR REPLACE FUNCTION criaPaciente(telefone varchar(20),emergencia varchar(20), email varchar(260),nrnumero varchar(45),nrcep varchar(12),cidade varchar(100),estado varchar(100),pais varchar(100),name varchar(260),nm_cpf varchar(15), nm_rg varchar(10),dt_nascimento date, idmedico integer)
+RETURNS varchar(20) AS $BODY$ 
+
+DECLARE contato_id INTEGER;
+DECLARE endereco_id INTEGER;
+DECLARE pessoa_id INTEGER;
+BEGIN
+
+INSERT INTO contato (nr_telefone, nr_emergencia,email) VALUES (telefone, emergencia, email) RETURNING id_contato INTO contato_id; 
+
+INSERT INTO endereco (numero,cep,cidade,estado,pais) VALUES (nrnumero,nrcep,cidade,estado,pais) RETURNING id_endereco INTO endereco_id;
+
+INSERT INTO Pessoa (nome,cpf,rg,nascimento,id_endereco,id_contato) VALUES (name, nm_cpf, nm_rg, dt_nascimento, endereco_id, contato_id) RETURNING id_pessoa INTO pessoa_id;
+
+INSERT INTO paciente (id_pessoa,id_medico) VALUES (pessoa_id, idmedico);
 	
-INSERT INTO contato (nr_telefone, nr_emergencia,email) VALUES (telefone, emergencia, email);
-INSERT INTO endereco (numero,cep,cidade,estado,pais) VALUES (nrnumero,nrcep,cidade,estado,pais) on conflict (numero,cep) do nothing;
-INSERT INTO Pessoa (nome,cpf,rg,nascimento,id_endereco,id_contato) VALUES (name,cpf,rg,nascimento,(select id_endereco from endereco where numero = nrnumero and cep = nrcep),(select id_contato from contato where nr_telefone=telefone));
-INSERT INTO paciente (id_pessoa,id_medico) VALUES ((select id_pessoa from pessoa where nome=name),(select id_medico from medico where id_pessoa=(select id_pessoa from pessoa where nome='nobody')));
 	RETURN ('Cadastrado');
+	
 END;
 $BODY$ LANGUAGE 'plpgsql';
 --

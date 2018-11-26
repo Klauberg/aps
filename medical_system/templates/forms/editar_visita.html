@@ -1,0 +1,142 @@
+<div id="container" style="padding:10px;">
+{% from "_macro.html" import paciente_form %}
+{% from "_macro.html" import paciente_edit %}
+    <a id="detalhes" class="btn btn-secondary" href="/sistema/">Voltar</a>
+    <h2 align="center" style="padding: 35px;"> Editar Visita </h2>
+    <form method="POST" class="cadastro-usuario" id="editar">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-label-group">
+            <label style="color:red;">*</label><label>Paciente:</label>
+            {{ paciente_form(form.paciente, class="form-control", id="selectPaciente") }}
+            <div id=paciente class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label>Temperatura:</label>
+            {{ paciente_form(form.temperatura, class="form-control", id="inputTemperatura", value=visita.temperatura, maxlength="4") }}
+            <div id="temperatura" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label>Pressão:</label>
+            {{ paciente_form(form.pressao, class="form-control", id="inputPressao",  value=visita.pressao, maxlength="10") }}
+            <div id="pressao" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;"">
+            <label style="color:red;">*</label><label for="diaa">Descrição Estado:</label>
+            {{ paciente_form(form.descricao_estado, id="inputDescEstado", class="form-control", value=visita.de_estado, maxlength="350") }}
+            <div id="estado" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label style="color:red;">*</label><label>Data de Visita:</label>
+            {{ paciente_form(form.visita, class="form-control col-2", value=visita.dt_visita, id="inputDataVisita",type="date") }}
+            <div id="datavisita" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label style="color:red;">*</label><label>Quarto:</label>
+            {{ paciente_form(form.quarto, class="form-control", value=visita.quarto, id="selectQuarto") }}
+            <div id="quarto" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label style="color:red;">*</label><label>Infecção:</label>
+            {{ paciente_form(form.infeccao, class="form-control", id="selectInfeccao", value=visita.infeccao) }}
+            <div id="infeccao" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label style="color:red;">*</label><label>Descrição Sintoma:</label>
+            {{ paciente_form(form.descricao_sintoma, class="form-control", id="inputDescSintoma", value=visita.de_sintomas, maxlength="350") }}
+            <div id="sintoma" class="">
+            </div>
+        </div>
+        <div class="form-label-group" style="padding-top:20px;">
+            <label style="color:red;">*</label><label>Data de Estadia:</label>
+            {{ paciente_form(form.data_estadia, class="form-control col-2", id="inputDataEstadia",value=visita.dt_estadia, type="date") }}
+            <div id="dataestadia" class="">
+            </div>
+        </div>
+        <div style="padding-top: 20px; padding-bottom: 50px;">
+            <button id="botao" class="btn btn-lg btn-warning btn-block" style="color:white;"type="submit">Editar</button>
+        </div>
+    </form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        function ajax_cadastro(){
+            $.ajax({
+                url: '/visita/editar/{{ id }}',
+                data: $('form').serialize(),
+                type: 'POST',
+                success: function(response){
+                    console.log(response);
+                    var data = $.parseJSON(response);
+                    if (data.letratemp == true){
+                        $("#inputTemperatura").addClass("is-invalid");
+                        $("#temperatura").addClass("invalid-feedback");
+                        $("#temperatura").html("Insira somente números");
+                    };
+                    if (data.tamanhotemp == true){
+                        $("#inputTemperatura").addClass("is-invalid");
+                        $("#temperatura").addClass("invalid-feedback");
+                        $("#temperatura").html("O tamanho do campo excede o limite permitido.");
+                    };
+                    if (data.letratemp == false && data.tamanhotemp == false){
+                        $("#inputTemperatura").removeClass("is-invalid");
+                        $("#temperatura").removeClass("invalid-feedback");
+                        $("#temperatura").html("")
+                    };
+                    if (data.letrapressao == true){
+                        $("#inputPressao").addClass("is-invalid");
+                        $("#pressao").addClass("invalid-feedback");
+                        $("#pressao").html("Insira somente números");
+                    };
+                    if (data.tamanhopressao == true){
+                        $("#inputPressao").addClass("is-invalid");
+                        $("#pressao").addClass("invalid-feedback");
+                        $("#pressao").html("O tamanho do campo excede o limite permitido");
+                    };
+                    if (data.letrapressao == false && data.tamanhopressao == false){
+                        $("#inputPressao").removeClass("is-invalid");
+                        $("#pressao").removeClass("invalid-feedback");
+                        $("#pressao").html("")
+                    };
+                    if (data.tamanhodescestado == true){
+                        $("#inputDescEstado").addClass("is-invalid");
+                        $("#estado").addClass("invalid-feedback");
+                        $("#estado").html("Tamanho do campo inválido");
+                    };
+                    if (data.tamanhodescestado == false){
+                        $("#inputDescEstado").removeClass("is-invalid");
+                        $("#estado").removeClass("invalid-feedback");
+                        $("#estado").html("");
+                    };
+                    if (data.tamanhodescsintoma == true){
+                        $("#inputDescSintoma").addClass("is-invalid");
+                        $("#sintoma").addClass("invalid-feedback");
+                        $("#sintoma").html("Tamanho do campo inválido");
+                    };
+                    if (data.tamanhodescsintoma == false){
+                        $("#inputDescSintoma").removeClass("is-invalid");
+                        $("#sintoma").removeClass("invalid-feedback");
+                        $("#sintoma").html("");
+                    };
+                    if (data.check == false){
+                        window.location = '/';
+                    };
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        };
+        $("#editar").submit(function(event){
+            event.preventDefault();
+            ajax_cadastro();
+        });
+    });
+</script>
+</div>

@@ -30,7 +30,7 @@
   <body class="background">
 
     <form method="POST" class="form-signin" style="background-color:rgba(23,162,184,.35); border:5px; border-radius:12px;">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="text-center mb-4">
         <img class="mb-4" src="{{url_for('static', filename='img/logo.png')}}" alt="" width="100%" height="auto">
       </div>

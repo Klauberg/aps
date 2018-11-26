@@ -1,12 +1,15 @@
 --Cria Estadia
-CREATE OR REPLACE FUNCTION criaEstadia(name varchar(260),room integer,infeccao boolean,sintomas varchar(360),data date)
-RETURNS varchar(20) AS
-$BODY$ BEGIN
-if ((select Nr_capacidade from quarto where id_quarto=room)<>(select Nr_usando from quarto where id_quarto=room)) then 
-	INSERT INTO estadia (id_paciente,id_quarto,bl_infeccao,De_Sintomas,Dt_Estadia) VALUES
- ((select id_paciente from paciente where id_pessoa=(select id_pessoa from pessoa where nome=name)),room,infeccao,sintomas,data);
+CREATE OR REPLACE FUNCTION criaEstadia(paciente_id integer,room integer,infeccao boolean,sintomas varchar(360),data date)
+RETURNS varchar(20) AS $BODY$ 
 
-	update quarto set nr_usando = ((select nr_usando from quarto where id_quarto=room)+1) where id_quarto = room;
+BEGIN
+
+if ((select Nr_capacidade from quarto where id_quarto=room)<>(select Nr_usando from quarto where id_quarto=room)) then
+
+INSERT INTO estadia (id_paciente,id_quarto,bl_infeccao,De_Sintomas,Dt_Estadia) VALUES
+(paciente_id,room,infeccao,sintomas,data);
+
+update quarto set nr_usando = ((select nr_usando from quarto where id_quarto=room)+1) where id_quarto = room;
 
 	RETURN ('Cadastrado');
 

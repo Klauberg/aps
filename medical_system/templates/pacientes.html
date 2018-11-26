@@ -1,15 +1,15 @@
 <body>
-<div class="container">
+<div class="container" id="container-paciente">
   <br>
   <h2>Lista de Pacientes</h2>
       <p>Esta é a Lista de Pacientes, que possuem esse usuário como médico.</p>
-      <a href="" class="btn btn-success btn-sm"><span>Adicionar</span></a>
+      <a id="cadastrar" href="/paciente/cadastrar" class="btn btn-success btn-sm">Adicionar</a>
   <table class="table table-bordered">
     <thead>
       <tr>
         <th>Nome</th>
         <th>Tel. Emergência</th>
-        <th>Quarto</th>
+        <th>Telefone</th>
         <th>Detalhes</th>
         <th>Editar</th>
         <th>Deletar</th>
@@ -18,17 +18,27 @@
     <tbody>
       {% for pessoa in paciente %}
       <tr>
-        <td>{{ paciente[0][0] }}</td>
-        <td>{{ paciente[0][1] }}</td>
-        <td>{{ paciente[0][2] }}</td>
-        <td align="center"><a class="btn btn-info btn-sm" style="color:white" href="/paciente/{{ paciente[0][3] }}">Ver Detalhes</a></td>
-        <td align="center"><a class="btn btn-warning btn-sm" style="color:white">Editar</a></td>
-        <td align="center"><a class="btn btn-danger btn-sm" style="color:white">Deletar</a></td>
+        <td>{{ pessoa[0] }}</td>
+        <td>{{ pessoa[1] }}</td>
+        <td>{{ pessoa[2] }}</td>
+        <td align="center"><a id="detalhes{{ pessoa[3] }}" class="btn btn-info btn-sm" style="color:white" href="/paciente/{{ pessoa[3] }}">Ver Detalhes</a></td>
+        <td align="center"><a id="editar{{ pessoa[3] }}" class="btn btn-warning btn-sm" style="color:white" href="/paciente/editar/{{ pessoa[3] }}"">Editar</a></td>
+        <td align="center"><a class="btn btn-danger btn-sm" style="color:white" href="/paciente/deletar/{{ pessoa[3] }}">Deletar</a></td>
+        <script>
+            $('#detalhes{{ pessoa[3] }}').click(function(event){
+                event.preventDefault();
+                link = this.href;
+                $('#paciente').load(link+" #container-paciente");
+            });
+            $('#editar{{ pessoa[3] }}').click(function(event){
+                event.preventDefault();
+                link = this.href;
+                $('#paciente').load(link);
+            });
+        </script>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
-
 </body>
-</html>

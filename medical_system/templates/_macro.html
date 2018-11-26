@@ -13,3 +13,19 @@
 
 
 {% endmacro %}
+
+{% macro paciente_form(campo) %}
+    {{ campo(**kwargs)|safe }}
+
+
+    {% if campo.errors%}
+        {% for erro in campo.errors %}
+            <div class="alert alert-danger alert-dismissible fade show">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ erro }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+{% endmacro %}

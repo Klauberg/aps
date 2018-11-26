@@ -1,0 +1,24 @@
+CREATE OR REPLACE FUNCTION editaPaciente(telefone varchar(20),emergencia varchar(20), d_email varchar(260),nrnumero varchar(45),nrcep varchar(12),nmcidade varchar(100),nmestado varchar(100),nmpais varchar(100),name varchar(260),nm_cpf varchar(15), nm_rg varchar(10),dt_nascimento date, paciente_id integer)
+RETURNS varchar(20) AS $BODY$ 
+
+DECLARE contato_id INTEGER;
+DECLARE endereco_id INTEGER;
+DECLARE pessoa_id INTEGER;
+BEGIN
+
+SELECT Paciente.id_pessoa INTO pessoa_id FROM paciente WHERE id_paciente=paciente_id; 
+
+SELECT Endereco.id_endereco INTO endereco_id FROM endereco WHERE id_endereco=(SELECT Pessoa.id_endereco FROM pessoa WHERE id_pessoa = pessoa_id);
+
+SELECT Contato.id_contato INTO contato_id FROM contato WHERE id_contato=(SELECT Pessoa.id_contato FROM pessoa WHERE id_pessoa = pessoa_id);
+
+UPDATE Pessoa SET nome = name, cpf = nm_cpf, rg = nm_rg, nascimento = dt_nascimento, id_endereco = endereco_id, id_contato = contato_id WHERE id_pessoa = pessoa_id;
+
+UPDATE contato SET nr_telefone = telefone, nr_emergencia = emergencia, email = d_email WHERE id_contato = contato_id; 
+
+UPDATE endereco SET numero = nrnumero, cep = nrcep, cidade = nmcidade, estado = nmestado, pais=nmpais WHERE id_endereco = endereco_id; 
+
+	RETURN ('Editado');
+	
+END;
+$BODY$ LANGUAGE 'plpgsql';

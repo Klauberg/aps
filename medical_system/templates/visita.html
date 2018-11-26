@@ -1,0 +1,44 @@
+<body>
+<div class="container" id="container-visita">
+  <br>
+  <h2>Lista de Visitas</h2>
+      <p>Esta é a Lista de Visitas, que esse usuário como médico visitou.</p>
+      <a id="cadastrar-visita" href="/visita/cadastrar" class="btn btn-success btn-sm">Adicionar</a>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Quarto</th>
+        <th>Data de Visita</th>
+        <th>Detalhes</th>
+        <th>Editar</th>
+        <th>Deletar</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in visita %}
+      <tr>
+        <td>{{ v[0] }}</td>
+        <td>{{ v[1] }}</td>
+        <td>{{ v[2] }}</td>
+        <td align="center"><a id="detalhes-visita{{ v[3] }}" class="btn btn-info btn-sm" style="color:white" href="/visita/{{ v[3] }}">Ver Detalhes</a></td>
+        <td align="center"><a id="editar-visita{{ v[3] }}" class="btn btn-warning btn-sm" style="color:white" href="/visita/editar/{{ v[3] }}"">Editar</a></td>
+        <td align="center"><a class="btn btn-danger btn-sm" style="color:white" href="/visita/deletar/{{ v[3] }}">Deletar</a></td>
+        <script>
+            $('#detalhes-visita{{ v[3] }}').click(function(event){
+                event.preventDefault();
+                link = this.href;
+                $('#visitas').load(link+" #container-visita");
+            });
+            $('#editar-visita{{ v[3] }}').click(function(event){
+                event.preventDefault();
+                link = this.href;
+                $('#visitas').load(link);
+            });
+        </script>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</body>
